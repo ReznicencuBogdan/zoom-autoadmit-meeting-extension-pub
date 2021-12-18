@@ -1,0 +1,17 @@
+{
+    "config": {
+        "jwt": "",
+        "meetingNumber": 222222,
+        "psw": "222222-password",
+        "userName": "zoom-helper"
+    },
+    "users": [
+        {
+            "cvrtto": "Michael Dev",
+            "fautoadmit": true,
+            "fban": false,
+            "fcvrt": true,
+            "name": "Chair. Conto - Speaker"
+        }
+    ]
+}
