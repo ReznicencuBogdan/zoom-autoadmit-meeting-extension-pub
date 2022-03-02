@@ -2,7 +2,7 @@
 A tool for Zoom that helps manage meetings.
 
 # Interface
-<img src="./ZoomManagerUi.png" width="128" height="128" align="left"/>
+<img src="./ZoomManagerUi.png"  align="left"/>
 
 # What can it do
 - User list with required attributes
