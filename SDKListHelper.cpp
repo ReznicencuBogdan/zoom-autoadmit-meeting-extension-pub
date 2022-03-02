@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SDKListHelper.h"
 #include "SDKInterfaceWrap.h"
 
@@ -8,7 +9,7 @@ SDKListHelper::SDKListHelper(ZOOM_SDK_NAMESPACE::IList<unsigned int>* lstUserID)
 }
 
 
-void SDKListHelper::ForEachItem(std::function<bool(ZOOM_SDK_NAMESPACE::IUserInfo*, unsigned int)> lambda)
+void SDKListHelper::ForEachItem(const std::function<bool(ZOOM_SDK_NAMESPACE::IUserInfo*, unsigned int)>& lambda)
 {
 	if (NULL == m_pLstUserId)
 	{
@@ -17,7 +18,7 @@ void SDKListHelper::ForEachItem(std::function<bool(ZOOM_SDK_NAMESPACE::IUserInfo
 
 	int count = m_pLstUserId->GetCount();
 
-	ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* pctrl = SDKInterfaceWrap::GetInst().GetMeetingParticipantsController();
+	ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* pctrl = SDKInterfaceWrap::Instance().GetMeetingParticipantsController();
 
 	for (int i = 0; i < count; i++)
 	{

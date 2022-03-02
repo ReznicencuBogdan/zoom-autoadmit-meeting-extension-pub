@@ -28,6 +28,7 @@
 #include "meeting_service_components/meeting_video_interface.h"
 #include "meeting_service_components/meeting_waiting_room_interface.h"
 #include "meeting_service_components/meeting_closedcaption_interface.h"
+#include "meeting_service_components/meeting_breakout_rooms_interface_v2.h"
 #include "customized_ui/customized_local_recording.h"
 #include "setting_service_interface.h"
 #include "customized_ui/customized_ui_mgr.h"
@@ -42,7 +43,8 @@
 
 inline void OutputDebugStringFmt(std::wstring const& wstr)
 {
-	OutputDebugString(wstr.c_str());
+	OutputDebugStringW(wstr.c_str());
+	OutputDebugStringW(L"--|\n");
 }
 
 

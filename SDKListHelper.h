@@ -12,7 +12,7 @@ public:
 
 	SDKListHelper(const SDKListHelper&) = delete;
 
-	void ForEachItem(std::function<bool(ZOOM_SDK_NAMESPACE::IUserInfo*, unsigned int userId)> lambda);
+	void ForEachItem(const std::function<bool(ZOOM_SDK_NAMESPACE::IUserInfo*, unsigned int)>&);
 
 	ZOOM_SDK_NAMESPACE::IUserInfo* GetUserInfoByName(const wchar_t* username);
 

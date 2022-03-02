@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SDKInterfaceWrap.h"
 
 
@@ -35,7 +36,7 @@ SDKInterfaceWrap::~SDKInterfaceWrap()
 		_inited = false;
 	}
 }
-SDKInterfaceWrap& SDKInterfaceWrap::GetInst()
+SDKInterfaceWrap& SDKInterfaceWrap::Instance()
 {
 	static SDKInterfaceWrap s_inst;
 	return s_inst;
@@ -107,7 +108,7 @@ ZOOM_SDK_NAMESPACE::IMeetingWaitingRoomController* SDKInterfaceWrap::GetMeetingW
 	return _meeting_waitingroom_ctrl;
 }
 ZOOM_SDK_NAMESPACE::IMeetingChatController* SDKInterfaceWrap::GetMeetingChatController()
-{
+{	
 	if (NULL == _meeting_char_ctrl && _inited && _meeting_service)
 	{
 		_meeting_char_ctrl = _meeting_service->GetMeetingChatController();
@@ -120,7 +121,15 @@ ZOOM_SDK_NAMESPACE::IMeetingChatController* SDKInterfaceWrap::GetMeetingChatCont
 
 	return _meeting_char_ctrl;
 }
+ZOOM_SDK_NAMESPACE::IMeetingVideoController* SDKInterfaceWrap::GetMeetingVideoController()
+{
+	if (NULL == _metting_video_ctrl && _inited && _meeting_service)
+	{
+		_metting_video_ctrl = _meeting_service->GetMeetingVideoController();
+	}
 
+	return _metting_video_ctrl;
+}
 
 
 const ZOOM_SDK_NAMESPACE::IZoomLastError* SDKInterfaceWrap::GetLastError()

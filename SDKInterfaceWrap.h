@@ -74,23 +74,38 @@ class SDKInterfaceWrap
 	, public ZOOM_SDK_NAMESPACE::IMeetingWaitingRoomEvent
 {
 public:
+	static SDKInterfaceWrap& Instance();
 
-	static SDKInterfaceWrap& GetInst();
-
-	ZOOM_SDK_NAMESPACE::SDKError  Init(ZOOM_SDK_NAMESPACE::InitParam& param_);
+	ZOOM_SDK_NAMESPACE::SDKError Init(ZOOM_SDK_NAMESPACE::InitParam& param_);
 	ZOOM_SDK_NAMESPACE::IAuthService* GetAuthService();
 	ZOOM_SDK_NAMESPACE::IMeetingService* GetMeetingService();
 	ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* GetMeetingParticipantsController();
 	ZOOM_SDK_NAMESPACE::IMeetingWaitingRoomController* GetMeetingWaitingRoomController();
-	ZOOM_SDK_NAMESPACE::IMeetingChatController * GetMeetingChatController();
-
-
+	ZOOM_SDK_NAMESPACE::IMeetingChatController* GetMeetingChatController();
+	ZOOM_SDK_NAMESPACE::IMeetingVideoController* GetMeetingVideoController();
 	const ZOOM_SDK_NAMESPACE::IZoomLastError* GetLastError();
 
 	void ListenInMeetingServiceMgrEvent(ISDKInMeetingServiceMgrEvent* event_);
 	void UnListenInMeetingServiceMgrEvent(ISDKInMeetingServiceMgrEvent* event_);
+private:
+	SDKInterfaceWrap();
+	virtual ~SDKInterfaceWrap();
 
+private:
+	EventSinkPool<ISDKInMeetingServiceMgrEvent> _sdk_inmeeting_service_mgr_event_pool;
 
+	ZOOM_SDK_NAMESPACE::IAuthService* _auth_service;
+	ZOOM_SDK_NAMESPACE::IMeetingService* _meeting_service;
+	ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* _meeting_participants_ctrl;
+	ZOOM_SDK_NAMESPACE::IMeetingWaitingRoomController* _meeting_waitingroom_ctrl;
+	ZOOM_SDK_NAMESPACE::IMeetingChatController* _meeting_char_ctrl;
+	ZOOM_SDK_NAMESPACE::IMeetingVideoController* _metting_video_ctrl;
+
+private:
+	const ZOOM_SDK_NAMESPACE::IZoomLastError* _last_error;
+	bool _inited;
+
+public:
 	//IAuthServiceEvent
 	virtual void onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret)
 	{
@@ -141,7 +156,10 @@ public:
 	virtual void onInvalidReclaimHostkey() {}
 
 	//IMeetingServiceEvent
-	virtual void onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult = 0) {}
+	virtual void onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult = 0)
+	{
+		Pool_Select_Call(ISDKInMeetingServiceMgrEvent, _sdk_inmeeting_service_mgr_event_pool, onMeetingStatusChanged(status, iResult))
+	}
 	virtual void onMeetingStatisticsWarningNotification(ZOOM_SDK_NAMESPACE::StatisticsWarningType type) {}
 	virtual void onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param) {}
 
@@ -154,21 +172,4 @@ public:
 	{
 		Pool_Select_Call(ISDKInMeetingServiceMgrEvent, _sdk_inmeeting_service_mgr_event_pool, onWatingRoomUserLeft(userID))
 	}
-
-
-private:
-	SDKInterfaceWrap();
-	virtual ~SDKInterfaceWrap();
-
-	EventSinkPool<ISDKInMeetingServiceMgrEvent> _sdk_inmeeting_service_mgr_event_pool;
-
-	ZOOM_SDK_NAMESPACE::IAuthService* _auth_service;
-	ZOOM_SDK_NAMESPACE::IMeetingService* _meeting_service;
-	ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* _meeting_participants_ctrl;
-	ZOOM_SDK_NAMESPACE::IMeetingWaitingRoomController* _meeting_waitingroom_ctrl;
-	ZOOM_SDK_NAMESPACE::IMeetingChatController* _meeting_char_ctrl;
-
-	const ZOOM_SDK_NAMESPACE::IZoomLastError* _last_error;
-
-	bool _inited;
 };
